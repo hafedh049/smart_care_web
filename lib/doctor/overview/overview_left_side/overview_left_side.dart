@@ -5,14 +5,9 @@ import 'package:smart_care_v2/doctor/overview/overview_left_side/booking_rate.da
 import 'package:smart_care_v2/doctor/overview/overview_left_side/incoming_patient_history.dart';
 import 'package:smart_care_v2/doctor/overview/overview_left_side/my_schedule.dart';
 
-class OverViewLeftSide extends StatefulWidget {
+class OverViewLeftSide extends StatelessWidget {
   const OverViewLeftSide({super.key});
 
-  @override
-  State<OverViewLeftSide> createState() => _OverViewLeftSideState();
-}
-
-class _OverViewLeftSideState extends State<OverViewLeftSide> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -21,7 +16,7 @@ class _OverViewLeftSideState extends State<OverViewLeftSide> {
         children: <Widget>[
           Container(
             padding: const EdgeInsets.all(8.0),
-            decoration: BoxDecoration(border: Border.all(width: .5, color: grey), color: welcomeWhite, borderRadius: BorderRadius.circular(10.0)),
+            decoration: BoxDecoration(border: Border.all(width: .3, color: grey), color: welcomeWhite, borderRadius: BorderRadius.circular(10.0)),
             child: TextFormField(decoration: const InputDecoration(hintText: 'Search', prefixIcon: Icon(FontAwesomeIcons.magnifyingGlass, color: grey, size: 20), border: InputBorder.none)),
           ),
           const SizedBox(height: 30),

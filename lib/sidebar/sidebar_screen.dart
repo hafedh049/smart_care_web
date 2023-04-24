@@ -3,6 +3,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:smart_care_v2/custom/customs.dart';
 import 'package:smart_care_v2/custom/globals.dart';
+import 'package:smart_care_v2/doctor/chat_room/chat_room.dart';
 import 'package:smart_care_v2/doctor/overview/overview.dart';
 import 'package:smart_care_v2/small_screen/small_screen.dart';
 
@@ -140,6 +141,7 @@ class _SideBarScreenState extends State<SideBarScreen> with SingleTickerProvider
                       scrollDirection: Axis.vertical,
                       children: const <Widget>[
                         OverView(),
+                        ChatRoom(),
                       ],
                     ),
                   ),

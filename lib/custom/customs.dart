@@ -44,7 +44,7 @@ class CustomTab extends StatelessWidget {
           text: tab,
           fontWeight: bold ? FontWeight.bold : FontWeight.normal,
           fontSize: selected ? 20 : 16,
-          color: selected ? /* Theme.of(context).textTheme.titleMedium!.color! */ white : grey,
+          color: selected ? white : grey,
         ),
       ),
     );

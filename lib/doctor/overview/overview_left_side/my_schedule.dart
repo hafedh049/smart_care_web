@@ -3,14 +3,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:smart_care_v2/custom/customs.dart';
 import 'package:smart_care_v2/custom/globals.dart';
 
-class MySchedule extends StatefulWidget {
+class MySchedule extends StatelessWidget {
   const MySchedule({super.key});
 
-  @override
-  State<MySchedule> createState() => _MyScheduleState();
-}
-
-class _MyScheduleState extends State<MySchedule> {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -25,7 +20,7 @@ class _MyScheduleState extends State<MySchedule> {
               onTap: () {},
               child: Container(
                 padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(color: white, borderRadius: BorderRadius.circular(5)),
+                decoration: BoxDecoration(border: Border.all(width: .3, color: grey), color: white, borderRadius: BorderRadius.circular(5)),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: const <Widget>[
@@ -42,22 +37,25 @@ class _MyScheduleState extends State<MySchedule> {
         Container(
           padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12.0),
           decoration: BoxDecoration(color: white, borderRadius: BorderRadius.circular(5)),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              for (int day = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day - 5).day; day <= DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 5).day; day++)
-                Container(
-                  padding: const EdgeInsets.all(8.0),
-                  decoration: BoxDecoration(color: day == DateTime.now().day ? blue : white, borderRadius: BorderRadius.circular(10)),
-                  child: Column(
-                    children: <Widget>[
-                      CircleAvatar(radius: 20, backgroundColor: white, child: CustomText(text: day.toString(), fontWeight: FontWeight.bold)),
-                      const SizedBox(height: 5),
-                      CustomText(text: weekDays[DateTime(DateTime.now().year, DateTime.now().month, day).weekday - 1]!, fontSize: 14, color: day == DateTime.now().day ? white : grey),
-                    ],
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                for (int day = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day - 5).day; day <= DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 5).day; day++)
+                  Container(
+                    padding: const EdgeInsets.all(8.0),
+                    decoration: BoxDecoration(color: day == DateTime.now().day ? blue : white, borderRadius: BorderRadius.circular(10)),
+                    child: Column(
+                      children: <Widget>[
+                        CircleAvatar(radius: 20, backgroundColor: white, child: CustomText(text: day.toString(), fontWeight: FontWeight.bold)),
+                        const SizedBox(height: 5),
+                        CustomText(text: weekDays[DateTime(DateTime.now().year, DateTime.now().month, day).weekday - 1]!, fontSize: 14, color: day == DateTime.now().day ? white : grey),
+                      ],
+                    ),
                   ),
-                ),
-            ],
+              ],
+            ),
           ),
         ),
         const SizedBox(height: 20),
