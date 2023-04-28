@@ -15,6 +15,7 @@ class OverViewLeftSide extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Container(
+            margin: const EdgeInsets.only(top: 8),
             padding: const EdgeInsets.all(8.0),
             decoration: BoxDecoration(border: Border.all(width: .3, color: grey), color: welcomeWhite, borderRadius: BorderRadius.circular(10.0)),
             child: TextFormField(decoration: const InputDecoration(hintText: 'Search', prefixIcon: Icon(FontAwesomeIcons.magnifyingGlass, color: grey, size: 20), border: InputBorder.none)),

@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -27,7 +26,7 @@ class ProfileCard extends StatelessWidget {
             child: CircleAvatar(
               radius: 28,
               backgroundColor: white,
-              child: CircleAvatar(radius: 25, backgroundImage: CachedNetworkImageProvider(hafedhUrl)),
+              child: CircleAvatar(radius: 25, backgroundImage: AssetImage("assets/pictures/hafedh.jpeg")),
             ),
           ),
           const SizedBox(height: 20),

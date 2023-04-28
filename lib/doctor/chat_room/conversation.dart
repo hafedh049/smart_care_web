@@ -4,20 +4,21 @@ import 'package:flutter_profile_picture/flutter_profile_picture.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:smart_care_v2/custom/customs.dart';
-import 'package:username/username.dart';
+import 'package:smart_care_v2/custom/methods.dart';
 
 import '../../custom/globals.dart';
 
 class Conversations extends StatefulWidget {
-  const Conversations({super.key});
-
+  const Conversations({super.key, required this.users});
+  final List<Map<String, dynamic>> users;
   @override
   State<Conversations> createState() => _ConversationsState();
 }
 
 class _ConversationsState extends State<Conversations> {
   final TextEditingController _searchController = TextEditingController();
-  final List<bool> _usersConvs = <bool>[true, ...List.generate(29, (int index) => false)];
+  final List<bool> _usersConvs = <bool>[true, ...List.generate(userMessages.length - 1, (int index) => false)];
+  final GlobalKey _searchKey = GlobalKey();
   @override
   void dispose() {
     _searchController.dispose();
@@ -29,7 +30,7 @@ class _ConversationsState extends State<Conversations> {
     return Container(
       width: 300,
       padding: const EdgeInsets.all(8),
-      decoration: BoxDecoration(color: welcomeWhite, borderRadius: BorderRadius.circular(15)),
+      decoration: BoxDecoration(borderRadius: BorderRadius.circular(15)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -54,6 +55,9 @@ class _ConversationsState extends State<Conversations> {
           TextField(
             controller: _searchController,
             cursorColor: grey,
+            onChanged: (String value) {
+              _searchKey.currentState!.setState(() {});
+            },
             decoration: InputDecoration(
               border: const OutlineInputBorder(borderSide: BorderSide(color: grey, width: 0.5)),
               focusedBorder: const OutlineInputBorder(borderSide: BorderSide(color: grey, width: 0.5)),
@@ -65,18 +69,20 @@ class _ConversationsState extends State<Conversations> {
           const SizedBox(height: 10),
           Expanded(
             child: StatefulBuilder(
+              key: _searchKey,
               builder: (BuildContext context, void Function(void Function()) _) {
+                final List<Map<String, dynamic>> filteredList = widget.users.where((Map<String, dynamic> element) => element["target"].toLowerCase().contains(_searchController.text.trim().toLowerCase())).toList();
                 return ListView.builder(
-                  itemCount: 30,
+                  itemCount: filteredList.length,
                   itemBuilder: (BuildContext context, int index) {
-                    final String username = Username.en().fullname;
                     return GestureDetector(
                       onTap: () {
                         if (!_usersConvs[index]) {
-                          for (int _ = 0; _ < 30; _++) {
+                          for (int _ = 0; _ < userMessages.length; _++) {
                             _usersConvs[_] = false;
                           }
                           _(() => _usersConvs[index] = true);
+                          detailsKey.currentState!.setState(() => chatKey.currentState!.setState(() => discussionIndex = index));
                         }
                       },
                       child: AnimatedContainer(
@@ -92,23 +98,25 @@ class _ConversationsState extends State<Conversations> {
                         child: Row(
                           children: <Widget>[
                             Stack(
-                              alignment: AlignmentDirectional.topEnd,
+                              alignment: AlignmentDirectional.bottomEnd,
                               children: <Widget>[
-                                ProfilePicture(name: username, radius: 25, fontsize: 16, random: true, tooltip: true),
-                                const CircleAvatar(radius: 5, backgroundColor: Colors.green),
+                                ProfilePicture(name: filteredList[index]["target"], radius: 25, fontsize: 16, tooltip: true),
+                                CircleAvatar(radius: 5, backgroundColor: filteredList[index]["state"] ? Colors.green : Colors.red),
                               ],
                             ),
                             const SizedBox(width: 20),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                CustomText(text: username, color: grey, fontSize: 16, fontWeight: FontWeight.bold),
-                                const SizedBox(height: 5),
-                                CustomText(text: messages[index], color: grey, fontSize: 14),
-                              ],
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  SingleChildScrollView(scrollDirection: Axis.horizontal, child: CustomText(text: filteredList[index]["target"], color: grey, fontSize: 16, fontWeight: FontWeight.bold)),
+                                  const SizedBox(height: 5),
+                                  SingleChildScrollView(scrollDirection: Axis.horizontal, child: CustomText(text: filteredList[index]["lastMessage"]["text"], color: grey, fontSize: 14)),
+                                ],
+                              ),
                             ),
-                            const Spacer(),
-                            CustomText(text: times[index], color: grey, fontSize: 12),
+                            const SizedBox(width: 10),
+                            CustomText(text: formatMessageDate(filteredList[index]["lastMessage"]["timestamp"]), color: grey, fontSize: 12),
                           ],
                         ),
                       ),

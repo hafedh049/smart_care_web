@@ -3,6 +3,8 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:patterns_canvas/patterns_canvas.dart';
 import 'package:smart_care_v2/custom/globals.dart';
+import 'package:smart_care_v2/welcome/welcome.dart';
+import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 class CustomText extends StatelessWidget {
   final String text;
@@ -56,47 +58,32 @@ class SettingsStack extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Widget widget = Stack(
-      alignment: Alignment.topCenter,
-      children: <Widget>[
-        AnimatedContainer(
-          alignment: AlignmentDirectional.center,
-          duration: 100.ms,
-          margin: const EdgeInsets.only(top: 55),
-          height: 150,
-          decoration: BoxDecoration(color: blue, borderRadius: BorderRadius.circular(5)),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12.0),
-            child: Column(
-              children: <Widget>[
-                const SizedBox(height: 85),
-                ElevatedButton(
-                  onPressed: () {},
-                  child: const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                    child: SingleChildScrollView(scrollDirection: Axis.horizontal, child: CustomText(text: "Settings", fontSize: 16, fontWeight: FontWeight.bold, color: white)),
-                  ),
-                ),
-                const SizedBox(height: 20),
-              ],
-            ),
+    final Widget widget = Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(color: blue, borderRadius: BorderRadius.circular(5)),
+      child: Center(
+        child: ElevatedButton(
+          onPressed: () {
+            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context) => const Welcome()), (Route route) => false);
+          },
+          child: const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            child: SingleChildScrollView(scrollDirection: Axis.horizontal, child: CustomText(text: "Logout", fontSize: 16, fontWeight: FontWeight.bold, color: white)),
           ),
         ),
-        Positioned(top: -8, child: Image.asset("assets/pictures/doctress.png", width: 180)),
-      ],
+      ),
     );
     bool state = false;
     return StatefulBuilder(
       builder: (BuildContext context, void Function(void Function()) _) {
         return InkWell(
-          onTap: () {},
+          onTap: () {
+            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context) => const Welcome()), (Route route) => false);
+          },
           onHover: (bool value) {
             _(() => state = value);
           },
-          child: SizedBox(
-            height: 200,
-            child: state ? widget.animate(onComplete: (AnimationController controller) => controller.repeat(reverse: true)).shimmer(colors: <Color>[white.withOpacity(.3), grey.withOpacity(.3)], duration: 1.seconds, delay: 500.ms) : widget,
-          ),
+          child: state ? widget.animate(onComplete: (AnimationController controller) => controller.repeat(reverse: true)).shimmer(colors: <Color>[white.withOpacity(.3), grey.withOpacity(.3)], duration: 1.seconds, delay: 500.ms) : widget,
         );
       },
     );
@@ -133,5 +120,11 @@ class HachurePainter extends CustomPainter {
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) {
     return false;
+  }
+}
+
+class MeetingDataSource extends CalendarDataSource<Appointment> {
+  MeetingDataSource(List<Appointment> source) {
+    appointments = source;
   }
 }

@@ -6,6 +6,7 @@ import 'package:smart_care_v2/auth/reset_account.dart';
 import 'package:smart_care_v2/auth/sign_up.dart';
 import 'package:smart_care_v2/custom/customs.dart';
 import 'package:smart_care_v2/custom/globals.dart';
+import 'package:smart_care_v2/small_screen/small_screen.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 import '../auth/sign_in.dart';
@@ -85,8 +86,9 @@ class _WelcomeState extends State<Welcome> {
             Container(
               height: MediaQuery.of(context).size.height * .8,
               width: MediaQuery.of(context).size.width / 2 * .8,
-              decoration: BoxDecoration(color: blueTabs, borderRadius: BorderRadius.circular(15)),
+              decoration: BoxDecoration(color: welcomeWhite, borderRadius: BorderRadius.circular(15)),
               child: Column(
+                mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   StatefulBuilder(
                     builder: (BuildContext context, void Function(void Function()) _) {
@@ -175,6 +177,14 @@ class _WelcomeState extends State<Welcome> {
         ),
       ).animate(target: _swap ? 0 : 1).slideX(duration: 500.ms, begin: -1, end: 0, curve: Curves.fastLinearToSlowEaseIn),
     );
-    return Scaffold(body: Container(color: blue, child: Row(children: <Widget>[leftSide, rightSide])));
+    return LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints constraints) {
+        if (constraints.maxHeight > 800 && constraints.maxWidth > 1150) {
+          return Scaffold(body: Container(color: dark, child: Row(children: <Widget>[leftSide, rightSide])));
+        } else {
+          return const SmallScreen();
+        }
+      },
+    );
   }
 }
